@@ -1,5 +1,5 @@
 drop table if exists user;
-drop table if exists remind_time;
+# drop table if exists remind_time;
 drop table if exists remind;
 
 create table user
@@ -12,8 +12,8 @@ create table user
 
 create table remind
 (
-    remind_id   varchar(20) primary key auto_increment,
-    user_id     varchar(20)  not null,
+    remind_id   int primary key auto_increment,
+    user_id     int          not null,
     title       varchar(100) not null,
     description varchar(1024),
     email       varchar(40)  not null,

@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 /** @author yang */
 @Table("user")
-public interface UserRepository extends CrudRepository<User, String> {
+public interface UserRepository extends CrudRepository<User, Integer> {
     /**
      * 获取用户
      *
