@@ -1,59 +1,78 @@
 package cn.yangliuqing.todolistbackend.service;
 
-import cn.yangliuqing.todolistbackend.entity.Task;
+import cn.yangliuqing.todolistbackend.entity.Remind;
+import cn.yangliuqing.todolistbackend.entity.User;
 import cn.yangliuqing.todolistbackend.repository.RemindRepository;
+import cn.yangliuqing.todolistbackend.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.PriorityQueue;
 
 /** @author yang */
 @Service
+@Slf4j
 public class ScheduledTaskService {
-    /** 任务时间靠前的在优先队列前 */
-    private final PriorityQueue<Task> queue =
-            new PriorityQueue<>((Task t1, Task t2) -> t1.getTime().isBefore(t2.getTime()) ? -1 : 1);
+    private final UserRepository userRepository;
+
+    private final RemindRepository remindRepository;
 
     private final EmailSenderService emailSenderService;
 
-    final String subject = "邮件提醒服务";
+    final String SUBJECT = "邮件提醒服务";
 
-    final String content = "尊敬的%s:\n\t您的任务%s已经到达提醒时间!\n\t任务详情:%s";
+    final String CONTENT = "尊敬的%s:\n\t您的任务%s已经到达提醒时间!\n\t任务详情:%s";
 
     public ScheduledTaskService(
-            EmailSenderService emailSenderService, RemindRepository remindRepository) {
+            EmailSenderService emailSenderService,
+            RemindRepository remindRepository,
+            UserRepository userRepository) {
         this.emailSenderService = emailSenderService;
+        this.userRepository = userRepository;
+        this.remindRepository = remindRepository;
     }
 
-    public void addTask(Task task) {
-        queue.add(task);
+    /**
+     * 添加新的任务
+     *
+     * @param remind 任务
+     */
+    public void addTask(Remind remind) {
+        remindRepository.save(remind);
+        log.info("已添加新的提醒任务, userId: " + remind.getUserId() + " remindId: " + remind.getRemindId());
+    }
+
+    /**
+     * 删除一个任务
+     *
+     * @param remindId 任务的id
+     */
+    public void deleteTask(Integer remindId) {
+        remindRepository.deleteById(remindId);
+        log.info("Safe delete a remind, id: " + remindId);
     }
 
     /** 每一分钟检查一次任务情况 */
     @Scheduled(cron = "0 0/1 * * * *")
     public void scheduleTask() {
-        if (!queue.isEmpty()) {
-            // 轮询第一个任务
-            var t = queue.element();
-            long currentTimeMillis = System.currentTimeMillis();
+        LocalDateTime now = LocalDateTime.now();
+        var list = remindRepository.findAllByRemindTimeBefore(now);
+        list.forEach(this::wrapEmailAndSendEmail);
+    }
 
-            // 如果第一个任务的提醒时间超过了当前时间,触发邮件发送事件
-            LocalDateTime remindTime = t.getTime();
-            LocalDateTime now = LocalDateTime.now();
-            if (remindTime.isAfter(now)) {
-                // 发送邮件
-                emailSenderService.sendTextEmail(
-                        t.getToEmail(),
-                        subject,
-                        String.format(content, t.getUsername(), t.getTitle(), t.getDescription()));
-
-                // 从队列中删除任务
-                queue.remove();
-
-                // 递归查看下一个任务
-                scheduleTask();
-            }
-        }
+    /**
+     * 包装Email消息以及发送Email消息
+     *
+     * @param remind 发送的事件
+     */
+    private void wrapEmailAndSendEmail(Remind remind) {
+        var user = userRepository.findById(remind.getUserId()).orElse(new User());
+        String toEmail = remind.getEmail();
+        String content =
+                String.format(
+                        CONTENT, user.getUsername(), remind.getTitle(), remind.getDescription());
+        emailSenderService.sendTextEmail(toEmail, SUBJECT, content);
+        log.info("已发送提醒邮件,目标用户" + toEmail + " 事件标题" + remind.getTitle());
     }
 }
