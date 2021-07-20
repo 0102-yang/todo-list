@@ -1,5 +1,4 @@
 drop table if exists user;
-# drop table if exists remind_time;
 drop table if exists remind;
 
 create table user
@@ -22,12 +21,3 @@ create table remind
     remind_time datetime,
     constraint UID foreign key (user_id) references user (user_id) on delete cascade
 );
-#
-# create table remind_time
-# (
-#     remind_time_id varchar(20) primary key auto_increment,
-#     remind_id      varchar(20) not null,
-#     remind_time    datetime,
-#     is_remind      bool,
-#     constraint RID foreign key (remind_id) references remind (remind_id) on delete cascade
-# );
