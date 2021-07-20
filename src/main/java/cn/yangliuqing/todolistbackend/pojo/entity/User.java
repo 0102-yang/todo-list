@@ -1,19 +1,23 @@
-package cn.yangliuqing.todolistbackend.entity;
+package cn.yangliuqing.todolistbackend.pojo.entity;
 
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /** @author yang */
+@Entity
 @Getter
+@Setter
+@Accessors(chain = true)
+@Table(name = "user")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,4 +1,4 @@
-package cn.yangliuqing.todolistbackend.entity;
+package cn.yangliuqing.todolistbackend.pojo.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
