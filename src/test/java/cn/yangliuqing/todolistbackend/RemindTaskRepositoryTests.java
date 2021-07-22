@@ -25,6 +25,7 @@ public class RemindTaskRepositoryTests {
                         .setCreateTime(createTime)
                         .setRemindTime(remindTime)
                         .setEmail("1155");
+        System.out.println(remind.toString());
         remindRepository.save(remind);
 
         LocalDateTime now = LocalDateTime.now();

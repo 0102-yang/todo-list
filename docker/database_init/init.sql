@@ -19,5 +19,6 @@ create table remind
     priority    int,
     create_time datetime,
     remind_time datetime,
+    reminded    boolean default false,
     constraint UID foreign key (user_id) references user (user_id) on delete cascade
 );

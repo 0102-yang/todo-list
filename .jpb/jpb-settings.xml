@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DatabaseMigrationSettings">
+    <database-infos>
+      <database-info>
+        <dbms-id>mysql</dbms-id>
+        <mapping-types>
+          <mapping-type>
+            <java-class>java.time.LocalDate</java-class>
+            <sql-type>date</sql-type>
+          </mapping-type>
+          <mapping-type>
+            <java-class>java.time.LocalTime</java-class>
+            <sql-type>time</sql-type>
+          </mapping-type>
+          <mapping-type>
+            <java-class>java.time.LocalDateTime</java-class>
+            <sql-type>datetime</sql-type>
+          </mapping-type>
+        </mapping-types>
+      </database-info>
+    </database-infos>
+  </component>
+</project>

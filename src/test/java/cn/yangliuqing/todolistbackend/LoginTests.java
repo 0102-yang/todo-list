@@ -10,11 +10,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class TodoListBackendApplicationTests {
+public class LoginTests {
     @Autowired private MockMvc mockMvc;
 
     @Test
-    void contextLoads() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/2")).andDo(MockMvcResultHandlers.print());
+    void login() throws Exception {
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post("/login")
+                                .param("username", "")
+                                .param("password", "123456"))
+                .andDo(MockMvcResultHandlers.print());
     }
 }

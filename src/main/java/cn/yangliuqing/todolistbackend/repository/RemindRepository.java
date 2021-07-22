@@ -19,4 +19,12 @@ public interface RemindRepository extends CrudRepository<Remind, Integer> {
      * @return 所有任务
      */
     List<Remind> findAllByRemindTimeBefore(LocalDateTime remindTime);
+
+    /**
+     * 通过userId查询所有的提醒
+     *
+     * @param userId 用户id
+     * @return 该用户的所有提醒
+     */
+    List<Remind> findAllByUserId(Integer userId);
 }

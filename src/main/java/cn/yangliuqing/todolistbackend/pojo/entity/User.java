@@ -2,6 +2,7 @@ package cn.yangliuqing.todolistbackend.pojo.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,12 +17,14 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@ToString
 @Accessors(chain = true)
 @Table(name = "user")
 public class User implements UserDetails {
+    private static final long serialVersionUID = 2064686325719422530L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer userId;
 
     private String username;
 

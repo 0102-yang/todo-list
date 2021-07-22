@@ -21,11 +21,12 @@ import java.util.Objects;
 @Table(name = "remind")
 @Accessors(chain = true)
 public class Remind implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 988457093022271899L;
 
     @Id
-    @Column(name = "remind_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "remind_id")
     private Integer remindId;
 
     @Column(name = "user_id", nullable = false)
@@ -48,6 +49,9 @@ public class Remind implements Serializable {
 
     @Column(name = "remind_time")
     private LocalDateTime remindTime;
+
+    @Column(name = "reminded")
+    private Boolean reminded = Boolean.FALSE;
 
     @Override
     public boolean equals(Object o) {

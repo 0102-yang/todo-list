@@ -15,7 +15,7 @@ public interface UserRepository extends CrudRepository<User, Integer> {
      * @param username 用户名
      * @return 用户
      */
-    User findUserByUsername(String username);
+    User findByUsername(String username);
 
     /**
      * 判断是否存在该用户名

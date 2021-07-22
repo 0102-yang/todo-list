@@ -1,7 +1,7 @@
 package cn.yangliuqing.todolistbackend.service;
 
-import cn.yangliuqing.todolistbackend.entity.Remind;
-import cn.yangliuqing.todolistbackend.entity.User;
+import cn.yangliuqing.todolistbackend.pojo.entity.Remind;
+import cn.yangliuqing.todolistbackend.pojo.entity.User;
 import cn.yangliuqing.todolistbackend.repository.RemindRepository;
 import cn.yangliuqing.todolistbackend.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
