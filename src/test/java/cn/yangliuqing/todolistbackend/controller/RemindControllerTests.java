@@ -1,4 +1,4 @@
-package cn.yangliuqing.todolistbackend;
+package cn.yangliuqing.todolistbackend.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,6 +45,9 @@ public class RemindControllerTests {
         params.add("title", "yang");
         params.add("email", "123456");
         mockMvc.perform(MockMvcRequestBuilders.post("/remind/1").params(params));
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/remind/1"))
+                .andDo(MockMvcResultHandlers.print());
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/remind/1"))
                 .andDo(MockMvcResultHandlers.print());

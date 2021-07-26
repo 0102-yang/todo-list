@@ -1,5 +1,6 @@
-package cn.yangliuqing.todolistbackend;
+package cn.yangliuqing.todolistbackend.controller;
 
+import cn.yangliuqing.todolistbackend.TodoListBackendApplication;
 import cn.yangliuqing.todolistbackend.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

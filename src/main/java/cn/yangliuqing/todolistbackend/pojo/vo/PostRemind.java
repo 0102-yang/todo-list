@@ -1,26 +1,32 @@
 package cn.yangliuqing.todolistbackend.pojo.vo;
 
+import cn.yangliuqing.todolistbackend.pojo.entity.Remind;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /** @author yang */
 @Data
 public class PostRemind {
-    @NotBlank private Integer userId;
+    @NotNull(message = "Must belong to a user.")
+    private Integer userId;
 
-    @NotBlank private String title;
-
+    @NotBlank(message = "Must have a description.")
     private String description;
-
-    @NotBlank private String email;
 
     private Integer priority;
 
-    private LocalDateTime createTime;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime remindTime;
 
-    private Boolean reminded;
+    public Remind getRemind() {
+        return new Remind()
+                .setUserId(userId)
+                .setDescription(description)
+                .setRemindTime(remindTime)
+                .setPriority(priority);
+    }
 }

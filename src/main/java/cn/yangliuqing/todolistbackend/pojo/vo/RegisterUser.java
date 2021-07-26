@@ -2,6 +2,7 @@ package cn.yangliuqing.todolistbackend.pojo.vo;
 
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -11,9 +12,13 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 public class RegisterUser {
-    @NotBlank private String username;
+    @NotBlank(message = "Username can not be blank.")
+    private String username;
 
-    @NotBlank private String password;
+    @NotBlank(message = "Password can not be blank.")
+    private String password;
 
-    @NotBlank private String email;
+    @NotBlank(message = "Email can not be blank.")
+    @Email(message = "Not a valid email address.")
+    private String email;
 }

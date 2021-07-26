@@ -22,14 +22,18 @@ import java.util.List;
 @Table(name = "user")
 public class User implements UserDetails {
     private static final long serialVersionUID = 2064686325719422530L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
 
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
 
+    @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Override

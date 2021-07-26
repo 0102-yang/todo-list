@@ -3,6 +3,7 @@ package cn.yangliuqing.todolistbackend.controller;
 import cn.yangliuqing.todolistbackend.exception.RemindNotExistsException;
 import cn.yangliuqing.todolistbackend.exception.UserNotExistsException;
 import cn.yangliuqing.todolistbackend.pojo.entity.Remind;
+import cn.yangliuqing.todolistbackend.pojo.vo.PostRemind;
 import cn.yangliuqing.todolistbackend.repository.RemindRepository;
 import cn.yangliuqing.todolistbackend.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +31,13 @@ public class RemindController {
         return ResponseEntity.ok(remind);
     }
 
-    @PostMapping("/remind/{userId}")
-    public ResponseEntity<String> postRemindToUser(
-            @PathVariable(name = "userId") Integer userId, @Valid Remind remind) {
-        if (!userRepository.existsById(userId)) {
+    @PostMapping("/remind")
+    public ResponseEntity<String> postRemindToUser(@Valid PostRemind postRemind) {
+        if (!userRepository.existsById(postRemind.getUserId())) {
             throw new UserNotExistsException();
         }
 
-        remindRepository.save(remind);
+        remindRepository.save(postRemind.getRemind());
         return ResponseEntity.accepted().body("资源已经创建");
     }
 

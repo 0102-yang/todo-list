@@ -22,36 +22,27 @@ import java.util.Objects;
 @Accessors(chain = true)
 public class Remind implements Serializable {
 
-    private static final long serialVersionUID = 988457093022271899L;
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "remind_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer remindId;
 
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(name = "title", nullable = false)
-    private String title;
-
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     private String description;
-
-    @Column(name = "email", nullable = false)
-    private String email;
 
     @Column(name = "priority")
     private Integer priority;
 
-    @Column(name = "create_time")
-    private LocalDateTime createTime;
-
     @Column(name = "remind_time")
     private LocalDateTime remindTime;
 
-    @Column(name = "reminded")
-    private Boolean reminded = Boolean.FALSE;
+    @Column(name = "complete_flag")
+    private Boolean completeFlag = Boolean.FALSE;
 
     @Override
     public boolean equals(Object o) {

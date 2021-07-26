@@ -7,7 +7,9 @@ import javax.validation.constraints.NotBlank;
 /** @author yang */
 @Data
 public class LoginUser {
-    @NotBlank private String username;
+    @NotBlank(message = "Username can not be blank.")
+    private String username;
 
-    @NotBlank private String password;
+    @NotBlank(message = "Password can not be blank.")
+    private String password;
 }

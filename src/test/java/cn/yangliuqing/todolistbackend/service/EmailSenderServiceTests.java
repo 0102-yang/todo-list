@@ -1,6 +1,5 @@
-package cn.yangliuqing.todolistbackend;
+package cn.yangliuqing.todolistbackend.service;
 
-import cn.yangliuqing.todolistbackend.service.EmailSenderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

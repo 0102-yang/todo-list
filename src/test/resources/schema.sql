@@ -11,13 +11,12 @@ create table user
 
 create table remind
 (
-    remind_id   int primary key auto_increment,
-    user_id     int          not null,
-    title       varchar(100) not null,
-    description varchar(1024),
-    email       varchar(40)  not null,
-    priority    int,
-    create_time datetime,
-    remind_time datetime,
-    constraint UID foreign key (user_id) references user (user_id) on delete cascade
+    remind_id     int primary key auto_increment,
+    user_id       int          not null,
+    description   varchar(100) not null,
+    priority      int,
+    remind_time   datetime,
+    complete_flag boolean default false,
+    constraint UID foreign key (user_id) references user (user_id)
 );
+

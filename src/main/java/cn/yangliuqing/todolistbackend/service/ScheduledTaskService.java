@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /** @author yang */
 @Service
@@ -22,7 +23,7 @@ public class ScheduledTaskService {
 
     final String SUBJECT = "邮件提醒服务";
 
-    final String CONTENT = "尊敬的%s:\n\t您的任务%s已经到达提醒时间!\n\t任务详情:%s";
+    final String CONTENT = "尊敬的%s:\n    您的任务'%s'已经到达提醒时间! 时间为%s";
 
     public ScheduledTaskService(
             EmailSenderService emailSenderService,
@@ -40,7 +41,11 @@ public class ScheduledTaskService {
      */
     public void addTask(Remind remind) {
         remindRepository.save(remind);
-        log.info("已添加新的提醒任务, userId: " + remind.getUserId() + " remindId: " + remind.getRemindId());
+        log.info(
+                "Add a remind task, userId: "
+                        + remind.getUserId()
+                        + " remindId: "
+                        + remind.getRemindId());
     }
 
     /**
@@ -50,14 +55,14 @@ public class ScheduledTaskService {
      */
     public void deleteTask(Integer remindId) {
         remindRepository.deleteById(remindId);
-        log.info("Safe delete a remind, id: " + remindId);
+        log.info("Safely delete a remind, id: " + remindId);
     }
 
     /** 每一分钟检查一次任务情况 */
-    @Scheduled(cron = "0 0/1 * * * *")
+    @Scheduled(cron = "1 0/1 * * * *")
     public void scheduleTask() {
         LocalDateTime now = LocalDateTime.now();
-        var list = remindRepository.findAllByRemindTimeBefore(now);
+        var list = remindRepository.findAllByRemindTimeBeforeAndCompleteFlag(now, Boolean.FALSE);
         list.forEach(this::wrapEmailAndSendEmail);
     }
 
@@ -67,12 +72,25 @@ public class ScheduledTaskService {
      * @param remind 发送的事件
      */
     private void wrapEmailAndSendEmail(Remind remind) {
+        // 将事件更新为已完成状态
+        remindRepository.updateCompleteFlagByRemindId(Boolean.TRUE, remind.getRemindId());
+
+        // 发送邮件
         var user = userRepository.findById(remind.getUserId()).orElse(new User());
-        String toEmail = remind.getEmail();
+        String toEmail = user.getEmail();
         String content =
-                String.format(
-                        CONTENT, user.getUsername(), remind.getTitle(), remind.getDescription());
+                formatEmailContent(
+                        user.getUsername(), remind.getDescription(), remind.getRemindTime());
         emailSenderService.sendTextEmail(toEmail, SUBJECT, content);
-        log.info("已发送提醒邮件,目标用户" + toEmail + " 事件标题" + remind.getTitle());
+        log.info(
+                "Send email complete, target user: "
+                        + toEmail
+                        + " remind info: "
+                        + remind.getDescription());
+    }
+
+    private String formatEmailContent(String username, String description, LocalDateTime time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH时mm分");
+        return String.format(CONTENT, username, description, formatter.format(time));
     }
 }
